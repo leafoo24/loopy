@@ -206,6 +206,10 @@ function Loopy(config){
 
 	self.loadFromURL = function(){
 		var data = _getParameterByName("data");
+		var model = _getParameterByName("model");
+		if(!data && model=="macro" && window.MACRO_MARKET_DATA){
+			data = window.MACRO_MARKET_DATA;
+		}
 		if(!data) data=decodeURIComponent(_blankData);
 		self.model.deserialize(data);
 	}; 
