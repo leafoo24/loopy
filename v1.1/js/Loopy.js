@@ -165,11 +165,45 @@ function Loopy(config){
 	/////////////////
 
 	self.dirty = false;
+	self.currentModelKey = null;
+	var _localModelPrefix = "loopy:local-model:";
 
 	// YOU'RE A DIRTY BOY
 	subscribe("model/changed", function(){
 		if(!self.embedded) self.dirty = true;
 	});
+
+	self.saveLocalModel = function(modelKey){
+		if(!modelKey || !window.localStorage) return false;
+		try{
+			localStorage.setItem(_localModelPrefix+modelKey, self.model.serialize());
+			localStorage.setItem(_localModelPrefix+modelKey+":savedAt", new Date().toISOString());
+			self.dirty = false;
+			return true;
+		}catch(e){
+			return false;
+		}
+	};
+
+	self.loadLocalModel = function(modelKey){
+		if(!modelKey || !window.localStorage) return null;
+		try{
+			return localStorage.getItem(_localModelPrefix+modelKey);
+		}catch(e){
+			return null;
+		}
+	};
+
+	self.clearLocalModel = function(modelKey){
+		if(!modelKey || !window.localStorage) return false;
+		try{
+			localStorage.removeItem(_localModelPrefix+modelKey);
+			localStorage.removeItem(_localModelPrefix+modelKey+":savedAt");
+			return true;
+		}catch(e){
+			return false;
+		}
+	};
 
 	subscribe("export/file", function(){
 		var element = document.createElement('a');
@@ -199,6 +233,30 @@ function Loopy(config){
 		input.click();
 	});
 
+	subscribe("save/local", function(){
+		var modelKey = self.currentModelKey || "macro";
+		if(self.saveLocalModel(modelKey)){
+			if(modelKey=="macro"){
+				window.history.replaceState(null, null, window.location.origin + window.location.pathname + "?model=macro");
+				self.currentModelKey = "macro";
+			}
+			alert("已保存当前模型。下次打开宏观市场模型时，会自动加载这次保存的版本。");
+		}else{
+			alert("保存失败：浏览器可能禁止了本地存储。可以先使用 save as file 导出文件。");
+		}
+	});
+
+	subscribe("model/restore-default", function(){
+		var modelKey = self.currentModelKey || "macro";
+		self.clearLocalModel(modelKey);
+		if(modelKey=="macro" && window.MACRO_MARKET_DATA){
+			self.model.deserialize(window.MACRO_MARKET_DATA);
+			window.history.replaceState(null, null, window.location.origin + window.location.pathname + "?model=macro");
+			self.currentModelKey = "macro";
+			self.dirty = false;
+		}
+	});
+
 	self.saveToURL = function(embed){
 
 		// Create link
@@ -215,6 +273,7 @@ function Loopy(config){
 
 		// NO LONGER DIRTY!
 		self.dirty = false;
+		if(self.currentModelKey) self.saveLocalModel(self.currentModelKey);
 
 		// PUSH TO HISTORY
 		window.history.replaceState(null, null, historyLink);
@@ -228,8 +287,12 @@ function Loopy(config){
 	self.loadFromURL = function(){
 		var data = _getParameterByName("data");
 		var model = _getParameterByName("model");
-		if(!data && model=="macro" && window.MACRO_MARKET_DATA){
-			data = window.MACRO_MARKET_DATA;
+		self.currentModelKey = model || null;
+		if(!data && model=="macro"){
+			data = self.loadLocalModel("macro");
+			if(!data && window.MACRO_MARKET_DATA){
+				data = window.MACRO_MARKET_DATA;
+			}
 		}
 		if(!data) data=decodeURIComponent(_blankData);
 		self.model.deserialize(data);
