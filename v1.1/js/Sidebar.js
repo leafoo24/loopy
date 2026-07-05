@@ -173,9 +173,8 @@ function Sidebar(loopy){
 
 			"<hr/><br>"+
 
-			"<span class='mini_button' onclick='publish(\"save/local\")'>保存当前模型</span> "+
-			"<span class='mini_button' onclick='publish(\"model/restore-default\")'>恢复默认宏观图</span><br><br>"+
-			"<span class='mini_button' onclick='publish(\"modal\",[\"save_link\"])'>save as link</span> <br><br>"+
+			"<span class='mini_button' onclick='publish(\"modal\",[\"save_link\"])'>save</span> "+
+			"<span class='mini_button' onclick='publish(\"model/restore-default\")'>restore macro default</span><br><br>"+
 			"<span class='mini_button' onclick='publish(\"export/file\")'>save as file</span> "+
 			"<span class='mini_button' onclick='publish(\"import/file\")'>load from file</span> <br><br>"+
 			"<span class='mini_button' onclick='publish(\"modal\",[\"embed\"])'>embed in your website</span> <br><br>"+

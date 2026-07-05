@@ -263,20 +263,22 @@ function Loopy(config){
 		var dataString = self.model.serialize();
 		var uri = dataString; // encodeURIComponent(dataString);
 		var base = window.location.origin + window.location.pathname;
-		var historyLink = base+"?data="+uri;
+		var modelKey = self.currentModelKey || "macro";
+		var historyLink = base+"?model="+encodeURIComponent(modelKey);
 		var link;
 		if(embed){
 			link = base+"?embed=1&data="+uri;
 		}else{
 			link = historyLink;
+			self.saveLocalModel(modelKey);
+			self.currentModelKey = modelKey;
 		}
 
 		// NO LONGER DIRTY!
 		self.dirty = false;
-		if(self.currentModelKey) self.saveLocalModel(self.currentModelKey);
 
 		// PUSH TO HISTORY
-		window.history.replaceState(null, null, historyLink);
+		if(!embed) window.history.replaceState(null, null, historyLink);
 
 		return link;
 	};
