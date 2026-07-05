@@ -21,7 +21,6 @@ function Toolbar(loopy){
 		// Add the button
 		var button = new ToolbarButton(self,{
 			id: id,
-			icon: "css/icons/"+id+".png",
 			tooltip: tooltip,
 			callback: callback
 		});
@@ -105,11 +104,9 @@ function ToolbarButton(toolbar, config){
 	var self = this;
 	self.id = config.id;
 
-	// Icon
 	self.dom = document.createElement("div");
 	self.dom.setAttribute("class", "toolbar_button");
 	self.dom.setAttribute("tool", self.id);
-	self.dom.style.backgroundImage = "url('"+config.icon+"')";
 
 	// Tooltip!
 	self.dom.setAttribute("data-balloon", config.tooltip);
