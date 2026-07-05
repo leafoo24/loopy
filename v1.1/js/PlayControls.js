@@ -89,7 +89,7 @@ function PlayControls(loopy){
 					loopy.setMode(Loopy.MODE_EDIT);
 				}
 			})).dom;
-			buttonDOM.style.width = "78px";
+			buttonDOM.style.width = "105px";
 			buttonDOM.style.left = "0px";
 			buttonDOM.style.top = "0px";
 
@@ -102,8 +102,8 @@ function PlayControls(loopy){
 				}
 			}));
 			var buttonDOM = pauseButton.dom;
-			buttonDOM.style.width = "78px";
-			buttonDOM.style.left = "86px";
+			buttonDOM.style.width = "105px";
+			buttonDOM.style.left = "120px";
 			buttonDOM.style.top = "0px";
 			subscribe("loopy/pause",function(){
 				pauseButton.setLabel(loopy.paused ? "Resume" : "Pause");
@@ -114,10 +114,11 @@ function PlayControls(loopy){
 				icon: 2,
 				label: "Reset",
 				onclick: function(){
+					loopy.setPaused(false);
 					publish("model/reset");
 				}
 			})).dom;
-			buttonDOM.style.width = "78px";
+			buttonDOM.style.width = "105px";
 			buttonDOM.style.right = "0px";
 			buttonDOM.style.top = "0px";
 

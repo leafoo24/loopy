@@ -44,9 +44,9 @@ canvas{
 #playbar{
 	position: absolute;
 	bottom: 15px;
-	left: calc(50% - 275px); /* 50% - half of (playbar width + sidebar width)*/
+	left: calc(50% - 330px); /* 50% - half of (playbar width + sidebar width)*/
 
-	width: 250px;
+	width: 360px;
 	height: 75px;
 
 	-webkit-user-select: none;
@@ -55,7 +55,7 @@ canvas{
 	user-select: none;
 }
 #playbar[fullscreen=yes]{
-	left: calc(50% - 125px); /* 50% - half of (playbar width)*/
+	left: calc(50% - 180px); /* 50% - half of (playbar width)*/
 }
 #playbar .component_button{
 	position: absolute;
@@ -68,7 +68,7 @@ canvas{
 	background: #555;
 }
 #playbar .play_slider{
-	width: 190px;
+	width: 300px;
     position: absolute;
     left: 30px;
     margin: 0;
