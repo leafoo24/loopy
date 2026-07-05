@@ -18,7 +18,7 @@ Check out these [user-made LOOPY's!](http://ncase.me/loopy/v1.1/pages/examples)
 ---
 
 Fork note:
-- Added a macro markets example for practicing growth, inflation, rates, earnings, valuation, and risk appetite feedback loops.
+- Added a Chinese macro markets example for practicing growth, inflation, rates, earnings, valuation, and risk appetite feedback loops.
 
 ---
 
