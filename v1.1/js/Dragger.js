@@ -13,8 +13,22 @@ function Dragger(loopy){
 	self.dragging = null;
 	self.offsetX = 0;
 	self.offsetY = 0;
+	self.panning = false;
+	self.panStartX = 0;
+	self.panStartY = 0;
+	self.panOffsetX = 0;
+	self.panOffsetY = 0;
 
 	subscribe("mousedown",function(){
+
+		if(self.loopy.mode==Loopy.MODE_EDIT && self.loopy.tool==Loopy.TOOL_PAN){
+			self.panning = true;
+			self.panStartX = Mouse.screenX;
+			self.panStartY = Mouse.screenY;
+			self.panOffsetX = loopy.offsetX;
+			self.panOffsetY = loopy.offsetY;
+			return;
+		}
 
 		// ONLY WHEN EDITING w DRAG
 		if(self.loopy.mode!=Loopy.MODE_EDIT) return;
@@ -52,6 +66,14 @@ function Dragger(loopy){
 
 	});
 	subscribe("mousemove",function(){
+
+		if(self.loopy.mode==Loopy.MODE_EDIT && self.loopy.tool==Loopy.TOOL_PAN && self.panning){
+			loopy.offsetX = self.panOffsetX + (Mouse.screenX-self.panStartX)/loopy.offsetScale;
+			loopy.offsetY = self.panOffsetY + (Mouse.screenY-self.panStartY)/loopy.offsetScale;
+			loopy.model.update();
+			Mouse.showCursor("grabbing");
+			return;
+		}
 
 		// ONLY WHEN EDITING w DRAG
 		if(self.loopy.mode!=Loopy.MODE_EDIT) return;
@@ -138,6 +160,11 @@ function Dragger(loopy){
 
 	});
 	subscribe("mouseup",function(){
+
+		if(self.loopy.tool==Loopy.TOOL_PAN){
+			self.panning = false;
+			return;
+		}
 
 		// ONLY WHEN EDITING w DRAG
 		if(self.loopy.mode!=Loopy.MODE_EDIT) return;

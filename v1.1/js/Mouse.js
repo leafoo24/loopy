@@ -1,6 +1,37 @@
 window.Mouse = {};
 Mouse.init = function(target){
 
+	Mouse.screenToWorld = function(screenX, screenY, scale, offsetX, offsetY){
+		var canvasses = document.getElementById("canvasses");
+		var tx = 0;
+		var ty = 0;
+		var s = 1/scale;
+		var CW = canvasses.clientWidth - _PADDING - _PADDING;
+		var CH = canvasses.clientHeight - _PADDING_BOTTOM - _PADDING;
+
+		if(loopy.embedded){
+			tx -= _PADDING/2;
+			ty -= _PADDING/2;
+		}
+
+		tx -= (CW+_PADDING)/2;
+		ty -= (CH+_PADDING)/2;
+
+		tx = s*tx;
+		ty = s*ty;
+
+		tx += (CW+_PADDING)/2;
+		ty += (CH+_PADDING)/2;
+
+		tx -= offsetX;
+		ty -= offsetY;
+
+		return {
+			x: screenX*s + tx,
+			y: screenY*s + ty
+		};
+	};
+
 	// Events!
 	var _onmousedown = function(event){
 		Mouse.moved = false;
@@ -10,38 +41,14 @@ Mouse.init = function(target){
 	};
 	var _onmousemove = function(event){
 
-		// DO THE INVERSE
-		var canvasses = document.getElementById("canvasses");
-		var tx = 0;
-		var ty = 0;
-		var s = 1/loopy.offsetScale;
-		var CW = canvasses.clientWidth - _PADDING - _PADDING;
-		var CH = canvasses.clientHeight - _PADDING_BOTTOM - _PADDING;
+		Mouse.screenX = event.x;
+		Mouse.screenY = event.y;
 
-		if(loopy.embedded){
-			tx -= _PADDING/2; // dunno why but this is needed
-			ty -= _PADDING/2; // dunno why but this is needed
-		}
-		
-		tx -= (CW+_PADDING)/2;
-		ty -= (CH+_PADDING)/2;
-		
-		tx = s*tx;
-		ty = s*ty;
-
-		tx += (CW+_PADDING)/2;
-		ty += (CH+_PADDING)/2;
-
-		tx -= loopy.offsetX;
-		ty -= loopy.offsetY;
-
-		// Mutliply by Mouse vector
-		var mx = event.x*s + tx;
-		var my = event.y*s + ty;
+		var world = Mouse.screenToWorld(event.x, event.y, loopy.offsetScale, loopy.offsetX, loopy.offsetY);
 
 		// Mouse!
-		Mouse.x = mx;
-		Mouse.y = my;
+		Mouse.x = world.x;
+		Mouse.y = world.y;
 
 		Mouse.moved = true;
 		publish("mousemove");
@@ -59,6 +66,16 @@ Mouse.init = function(target){
 
 	// Add mouse & touch events!
 	_addMouseEvents(target, _onmousedown, _onmousemove, _onmouseup);
+	target.addEventListener("wheel", function(event){
+		event.preventDefault();
+		Mouse.screenX = event.offsetX;
+		Mouse.screenY = event.offsetY;
+		var world = Mouse.screenToWorld(event.offsetX, event.offsetY, loopy.offsetScale, loopy.offsetX, loopy.offsetY);
+		Mouse.x = world.x;
+		Mouse.y = world.y;
+		Mouse.wheelDelta = -event.deltaY;
+		publish("mousewheel");
+	}, { passive:false });
 
 	// Cursor & Update
 	Mouse.target = target;

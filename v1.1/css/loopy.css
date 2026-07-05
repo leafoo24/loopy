@@ -34,6 +34,9 @@ canvas{
 #canvasses[cursor=label]{
 	cursor: url('cursors/label.png') 15 15, auto;
 }
+#canvasses[cursor=pan]{
+	cursor: grab;
+}
 
 
 
@@ -109,9 +112,9 @@ div[big=yes] .play_button_label{
 #toolbar{
 	position: absolute;
 	left: 0px;
-	top: calc(33% - 142.5px); /* 33% - half of toolbar height */
+	top: calc(33% - 177.5px); /* 33% - half of toolbar height */
 
-	width:75px; height:280px;
+	width:75px; height:350px;
 	padding: 5px;
 	background-color: #ddd;
 
@@ -134,6 +137,22 @@ div[big=yes] .play_button_label{
 .toolbar_button[selected=yes]{
 	border: 2px solid #888;
 	background-color: #999;
+}
+.toolbar_button[tool=pan]{
+	background-image: none !important;
+	position: relative;
+}
+.toolbar_button[tool=pan]:before{
+	content: "✋";
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 60px;
+	height: 60px;
+	line-height: 60px;
+	text-align: center;
+	font-size: 38px;
+	color: #111;
 }
 
 /**********

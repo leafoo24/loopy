@@ -79,6 +79,13 @@ function Toolbar(loopy){
 		}
 	});
 	self.addButton({
+		id: "pan",
+		tooltip: "(P)AN VIEW",
+		callback: function(){
+			self.setTool("pan");
+		}
+	});
+	self.addButton({
 		id: "erase",
 		tooltip: "(E)RASE",
 		callback: function(){
@@ -101,6 +108,7 @@ function ToolbarButton(toolbar, config){
 	// Icon
 	self.dom = document.createElement("div");
 	self.dom.setAttribute("class", "toolbar_button");
+	self.dom.setAttribute("tool", self.id);
 	self.dom.style.backgroundImage = "url('"+config.icon+"')";
 
 	// Tooltip!

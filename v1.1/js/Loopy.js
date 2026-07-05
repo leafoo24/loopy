@@ -12,6 +12,7 @@ Loopy.TOOL_INK = 0;
 Loopy.TOOL_DRAG = 1;
 Loopy.TOOL_ERASE = 2;
 Loopy.TOOL_LABEL = 3;
+Loopy.TOOL_PAN = 4;
 
 function Loopy(config){
 
@@ -138,6 +139,26 @@ function Loopy(config){
 		if(self.mode!=Loopy.MODE_PLAY) return;
 		self.setPaused(!self.paused);
 	};
+
+	self.zoom = function(factor, screenX, screenY){
+		var oldScale = self.offsetScale;
+		var newScale = oldScale * factor;
+		if(newScale<0.2) newScale = 0.2;
+		if(newScale>3) newScale = 3;
+		if(newScale==oldScale) return;
+
+		var before = Mouse.screenToWorld(screenX, screenY, oldScale, self.offsetX, self.offsetY);
+		self.offsetScale = newScale;
+		var after = Mouse.screenToWorld(screenX, screenY, newScale, self.offsetX, self.offsetY);
+		self.offsetX += after.x - before.x;
+		self.offsetY += after.y - before.y;
+		self.model.update();
+	};
+
+	subscribe("mousewheel", function(){
+		var factor = Mouse.wheelDelta>0 ? 1.12 : 0.88;
+		self.zoom(factor, Mouse.screenX, Mouse.screenY);
+	});
 
 	/////////////////
 	// SAVE & LOAD //
