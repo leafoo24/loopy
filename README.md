@@ -1,5 +1,9 @@
 ![](https://i.imgur.com/S8c7E8o.gif)
 
+## 中文宏观市场练习版
+
+在线打开：[https://leafoo24.github.io/loopy/](https://leafoo24.github.io/loopy/)
+
 ### [LOOPY - a tool for thinking in systems](http://ncase.me/loopy/)
 
 [Zero Rights Reserved](http://creativecommons.org/publicdomain/zero/1.0/): 
