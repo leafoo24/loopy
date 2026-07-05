@@ -89,6 +89,9 @@ canvas{
 	position: relative;
     top: -5px;
 }
+#playbar .component_button[no_icon=yes] .play_button_label{
+	top: 0;
+}
 div[big=yes] .play_button_icon{
 	width: 30px;
 	height: 30px;

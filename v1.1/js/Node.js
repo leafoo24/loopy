@@ -58,6 +58,7 @@ function Node(model, config){
 
 		// ONLY WHEN PLAYING
 		if(self.loopy.mode!=Loopy.MODE_PLAY) return;
+		if(self.loopy.paused) return;
 
 		// If moused over this, show it, or not.
 		_controlsSelected = self.isPointInNode(Mouse.x, Mouse.y);
@@ -74,6 +75,7 @@ function Node(model, config){
 	var _listenerMouseDown = subscribe("mousedown",function(){
 
 		if(self.loopy.mode!=Loopy.MODE_PLAY) return; // ONLY WHEN PLAYING
+		if(self.loopy.paused) return;
 		if(_controlsSelected) _controlsPressed = true;
 
 		// IF YOU CLICKED ME...
@@ -93,6 +95,7 @@ function Node(model, config){
 	});
 	var _listenerMouseUp = subscribe("mouseup",function(){
 		if(self.loopy.mode!=Loopy.MODE_PLAY) return; // ONLY WHEN PLAYING
+		if(self.loopy.paused) return;
 		_controlsPressed = false;
 	});
 	var _listenerReset = subscribe("model/reset", function(){

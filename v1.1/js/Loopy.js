@@ -42,6 +42,7 @@ function Loopy(config){
 
 	// Play/Edit mode
 	self.mode = Loopy.MODE_EDIT;
+	self.paused = false;
 
 	// Tools
 	self.toolbar = new Toolbar(self);
@@ -75,7 +76,7 @@ function Loopy(config){
 		Mouse.update();
 		if(self.wobbleControls>=0) self.wobbleControls--; // wobble
 		if(!self.modal.isShowing){ // modAl
-			self.model.update(); // modEl
+			if(!self.paused) self.model.update(); // modEl
 		}
 	};
 	setInterval(self.update, 1000/30); // 30 FPS, why not.
@@ -100,6 +101,7 @@ function Loopy(config){
 	self.setMode = function(mode){
 
 		self.mode = mode;
+		self.setPaused(false);
 		publish("loopy/mode");
 
 		// Play mode!
@@ -126,6 +128,15 @@ function Loopy(config){
 			document.getElementById("canvasses").setAttribute("cursor", self.toolbar.currentTool); // TODO: EVENT BASED
 		}
 
+	};
+
+	self.setPaused = function(paused){
+		self.paused = paused;
+		publish("loopy/pause");
+	};
+	self.togglePaused = function(){
+		if(self.mode!=Loopy.MODE_PLAY) return;
+		self.setPaused(!self.paused);
 	};
 
 	/////////////////

@@ -79,7 +79,7 @@ function PlayControls(loopy){
 
 		}else{
 
-			// Stop | Reset
+			// Stop | Pause | Reset
 
 			// STOP BUTTON
 			var buttonDOM = page.addComponent(new PlayButton({
@@ -89,9 +89,25 @@ function PlayControls(loopy){
 					loopy.setMode(Loopy.MODE_EDIT);
 				}
 			})).dom;
-			buttonDOM.style.width = "100px";
+			buttonDOM.style.width = "78px";
 			buttonDOM.style.left = "0px";
 			buttonDOM.style.top = "0px";
+
+			// PAUSE / RESUME BUTTON
+			var pauseButton = page.addComponent(new PlayButton({
+				icon: null,
+				label: "Pause",
+				onclick: function(){
+					loopy.togglePaused();
+				}
+			}));
+			var buttonDOM = pauseButton.dom;
+			buttonDOM.style.width = "78px";
+			buttonDOM.style.left = "86px";
+			buttonDOM.style.top = "0px";
+			subscribe("loopy/pause",function(){
+				pauseButton.setLabel(loopy.paused ? "Resume" : "Pause");
+			});
 
 			// RESET BUTTON
 			var buttonDOM = page.addComponent(new PlayButton({
@@ -101,7 +117,7 @@ function PlayControls(loopy){
 					publish("model/reset");
 				}
 			})).dom;
-			buttonDOM.style.width = "100px";
+			buttonDOM.style.width = "78px";
 			buttonDOM.style.right = "0px";
 			buttonDOM.style.top = "0px";
 
@@ -127,12 +143,18 @@ function PlayButton(config){
 
 	var self = this;
 
-	var label = "<div class='play_button_icon' icon='"+config.icon+"'></div> "
-				+ "<div class='play_button_label'>"+config.label+"</div>";
+	var makeLabel = function(label){
+		var icon = (config.icon===null) ? "" : "<div class='play_button_icon' icon='"+config.icon+"'></div> ";
+		return icon + "<div class='play_button_label'>"+label+"</div>";
+	};
 
-	self.dom = _createButton(label, function(){
+	self.dom = _createButton(makeLabel(config.label), function(){
 		config.onclick();
 	});
+	if(config.icon===null) self.dom.setAttribute("no_icon","yes");
+	self.setLabel = function(label){
+		self.dom.innerHTML = makeLabel(label);
+	};
 
 	// Tooltip!
 	if(config.tooltip){
