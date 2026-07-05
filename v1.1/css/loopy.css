@@ -130,13 +130,16 @@ div[big=yes] .play_button_label{
 }
 
 .toolbar_button{
-	width:42px; height:42px;
-	margin: 4px;
+	width:40px; height:40px;
+	margin: 5px;
 	border: 2px solid transparent;
 	border-radius: 7px;
 	cursor: pointer;
 	background: rgba(255,255,255,0.35);
 	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 .toolbar_button[selected=yes]{
 	border: 2px solid #777;
@@ -146,90 +149,36 @@ div[big=yes] .play_button_label{
 .toolbar_button:hover{
 	background-color: #f8f8f8;
 }
-.toolbar_button:before,
-.toolbar_button:after{
-	box-sizing: border-box;
-	content: "";
-	position: absolute;
-	display: block;
-}
-.toolbar_button[tool=ink]:before{
-	width: 24px;
-	height: 7px;
-	left: 9px;
-	top: 17px;
-	background: #111;
-	border-radius: 4px;
-	transform: rotate(-45deg);
-}
-.toolbar_button[tool=ink]:after{
-	width: 0;
-	height: 0;
-	left: 6px;
-	top: 25px;
-	border-left: 5px solid transparent;
-	border-right: 5px solid transparent;
-	border-top: 9px solid #111;
-	transform: rotate(-45deg);
-}
-.toolbar_button[tool=label]:before{
-	content: "T";
-	position: absolute;
-	left: 0;
-	top: 2px;
-	width: 42px;
+.toolbar_icon{
+	width: 100%;
 	text-align: center;
-	font-family: Georgia, serif;
-	font-size: 31px;
+	font-family: Helvetica, Arial, sans-serif;
+	font-size: 28px;
 	font-weight: 700;
-	line-height: 38px;
+	line-height: 40px;
 	color: #111;
+	pointer-events: none;
 }
-.toolbar_button[tool=drag]:before{
-	width: 22px;
-	height: 22px;
-	left: 10px;
-	top: 10px;
-	border: 3px solid #111;
-	border-radius: 5px;
-	transform: rotate(-8deg);
+.toolbar_button[tool=label] .toolbar_icon{
+	font-family: Georgia, serif;
+	font-size: 30px;
+	line-height: 36px;
 }
-.toolbar_button[tool=drag]:after{
-	width: 12px;
-	height: 12px;
-	left: 20px;
-	top: 18px;
-	border: 3px solid #111;
-	border-left: 0;
-	border-top: 0;
-}
-.toolbar_button[tool=pan]:before{
-	content: "☝";
-	position: absolute;
-	left: 0;
-	top: 1px;
-	width: 42px;
-	text-align: center;
-	font-size: 29px;
+.toolbar_button[tool=drag] .toolbar_icon{
+	font-size: 25px;
 	line-height: 38px;
-	color: #111;
 }
-.toolbar_button[tool=erase]:before{
-	width: 24px;
-	height: 16px;
-	left: 9px;
-	top: 13px;
-	border: 3px solid #111;
-	border-radius: 4px;
-	transform: rotate(-24deg);
+.toolbar_button[tool=pan] .toolbar_icon{
+	font-size: 25px;
+	line-height: 38px;
+	transform: rotate(45deg);
 }
-.toolbar_button[tool=erase]:after{
-	width: 18px;
-	height: 3px;
-	left: 13px;
-	top: 29px;
-	background: #111;
-	border-radius: 2px;
+.toolbar_button[tool=erase] .toolbar_icon{
+	font-size: 27px;
+	line-height: 36px;
+}
+#toolbar .toolbar_button[data-balloon]:after{
+	margin-left: 8px;
 }
 
 /**********

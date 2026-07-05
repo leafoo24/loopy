@@ -107,6 +107,16 @@ function ToolbarButton(toolbar, config){
 	self.dom = document.createElement("div");
 	self.dom.setAttribute("class", "toolbar_button");
 	self.dom.setAttribute("tool", self.id);
+	var icon = document.createElement("div");
+	icon.setAttribute("class", "toolbar_icon");
+	icon.innerHTML = {
+		ink: "✎",
+		label: "T",
+		drag: "▣",
+		pan: "↕",
+		erase: "⌫"
+	}[self.id] || "?";
+	self.dom.appendChild(icon);
 
 	// Tooltip!
 	self.dom.setAttribute("data-balloon", config.tooltip);
